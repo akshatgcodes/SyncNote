@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
 /* ─── API helper ──────────────────────────────────────────────────────────── */
-const API = "";  // Vite proxies /api → localhost:3001
+const API = import.meta.env.VITE_API_URL || "";
 
 async function apiFetch(path, options = {}, token = null) {
   const res = await fetch(API + path, {
