@@ -473,6 +473,22 @@ const css = `
 
   /* No notes empty */
   .no-notes { padding: 20px 8px; text-align: center; color: var(--text3); font-size: 13px; line-height: 1.5; }
+
+  .btn-menu { display: none; background: none; border: none; font-size: 22px; color: var(--text2); padding: 4px 8px; border-radius: 6px; cursor: pointer; }
+  .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 50; }
+  @media (max-width: 640px) {
+    .btn-menu { display: flex; align-items: center; }
+    .sidebar { position: fixed; left: 0; top: 0; bottom: 0; z-index: 60; transform: translateX(-100%); transition: transform .25s ease; width: 280px; }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar-overlay.open { display: block; }
+    .main { width: 100%; }
+    .editor-topbar { padding: 10px 14px; gap: 8px; }
+    .editor-title-input { font-size: 18px; }
+    .editor-body { padding: 16px; }
+    .editor-toolbar { padding: 6px 14px; }
+    .chat-panel { width: calc(100vw - 24px); right: 12px; bottom: 80px; height: 60vh; }
+    .chat-fab { bottom: 16px; right: 16px; }
+  }
 `;
 
 /* ─── Toast ───────────────────────────────────────────────────────────────── */
@@ -705,6 +721,7 @@ function NoteEditor({ note, token, onSaved, onDeleted, toast }) {
   return (
     <div className="editor-wrap">
       <div className="editor-topbar">
+        <button className="btn-menu" onClick={() => setSidebarOpen(true)}>☰</button>
         <input
           className="editor-title-input"
           value={title}
@@ -752,6 +769,7 @@ function MainApp({ user, token, onLogout }) {
   const [notes, setNotes] = useState([]);
   const [activeId, setActiveId] = useState(null);
   const [loadingNotes, setLoadingNotes] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [toasts, setToasts] = useState([]);
 
   const toast = (msg, type = "success") =>
@@ -794,7 +812,7 @@ function MainApp({ user, token, onLogout }) {
   return (
     <div className="app">
       {/* Sidebar */}
-      <div className="sidebar">
+      <div className={`sidebar${sidebarOpen ? " open" : ""}`}>
         <div className="sidebar-header">
           <div className="sidebar-logo">
             <div className="sidebar-logo-icon">✎</div>
@@ -818,7 +836,7 @@ function MainApp({ user, token, onLogout }) {
             <div
               key={n.id}
               className={`note-item${n.id === activeId ? " active" : ""}`}
-              onClick={() => setActiveId(n.id)}
+              onClick={() => { setActiveId(n.id); setSidebarOpen(false); }}
             >
               <div className="note-item-title">{n.title || "Untitled"}</div>
               <div className="note-item-meta">
@@ -838,6 +856,7 @@ function MainApp({ user, token, onLogout }) {
         </div>
       </div>
 
+      <div className={`sidebar-overlay${sidebarOpen ? " open" : ""}`} onClick={() => setSidebarOpen(false)} />
       {/* Main content */}
       <div className="main">
         {activeNote ? (
