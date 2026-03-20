@@ -887,7 +887,7 @@ export default function App() {
       .catch(() => { setToken(null); setTokenState(null); setLoading(false); });
   }, []);
 
-  const handleAuth = (u) => setUser(u);
+  const handleAuth = (u) => { setTokenState(getToken()); setUser(u); };
   const handleLogout = () => { setToken(null); setTokenState(null); setUser(null); };
 
   if (loading) return (
