@@ -659,7 +659,11 @@ function NoteEditor({ note, token, onSaved, onDeleted, toast }) {
     saveTimer.current = setTimeout(async () => {
       try {
         const content = edRef.current?.innerHTML || "";
-        const updated = await apiFetch(`/api/notes/${note.id}`, { method: "PUT", body: { title, content } }, token);
+        const plainText = (edRef.current?.innerText || "").trim();
+        const firstLine = plainText.split("\n").map(l => l.trim()).find(l => l.length > 0) || "";
+        const autoTitle = firstLine.slice(0, 60) || "Untitled";
+        setTitle(autoTitle);
+        const updated = await apiFetch(`/api/notes/${note.id}`, { method: "PUT", body: { title: autoTitle, content } }, token);
         onSaved(updated);
         setSaved(true);
       } catch (ex) {
