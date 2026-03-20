@@ -139,6 +139,52 @@ app.post("/api/chat", auth, async (req, res) => {
   }
 });
 
+app.post("/api/title", auth, async (req, res) => {
+  const { content } = req.body;
+  if (!content?.trim()) return res.json({ title: "Untitled" });
+  if (!GROQ_KEY) return res.json({ title: content.trim().slice(0, 60) });
+  try {
+    const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_KEY },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          { role: "system", content: "Generate a short, concise title (max 6 words) for the following note. Reply with ONLY the title, no quotes, no punctuation at the end." },
+          { role: "user", content: content.slice(0, 500) }
+        ],
+        max_tokens: 20, temperature: 0.5
+      })
+    });
+    const data = await groqRes.json();
+    const title = data.choices?.[0]?.message?.content?.trim() || content.trim().slice(0, 60);
+    res.json({ title });
+  } catch { res.json({ title: content.trim().slice(0, 60) }); }
+});
+
+app.post("/api/title", auth, async (req, res) => {
+  const { content } = req.body;
+  if (!content?.trim()) return res.json({ title: "Untitled" });
+  if (!GROQ_KEY) return res.json({ title: content.trim().slice(0, 60) });
+  try {
+    const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_KEY },
+      body: JSON.stringify({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+          { role: "system", content: "Generate a short, concise title (max 6 words) for the following note. Reply with ONLY the title, no quotes, no punctuation at the end." },
+          { role: "user", content: content.slice(0, 500) }
+        ],
+        max_tokens: 20, temperature: 0.5
+      })
+    });
+    const data = await groqRes.json();
+    const title = data.choices?.[0]?.message?.content?.trim() || content.trim().slice(0, 60);
+    res.json({ title });
+  } catch { res.json({ title: content.trim().slice(0, 60) }); }
+});
+
 app.get("*", (req, res) => {
   const index = join(distPath, "index.html");
   if (fs.existsSync(index)) res.sendFile(index);

@@ -660,8 +660,13 @@ function NoteEditor({ note, token, onSaved, onDeleted, toast }) {
       try {
         const content = edRef.current?.innerHTML || "";
         const plainText = (edRef.current?.innerText || "").trim();
-        const firstLine = plainText.split("\n").map(l => l.trim()).find(l => l.length > 0) || "";
-        const autoTitle = firstLine.slice(0, 60) || "Untitled";
+        let autoTitle = "Untitled";
+        if (plainText.length > 0) {
+          try {
+            const titleRes = await apiFetch(`/api/title`, { method: "POST", body: { content: plainText } }, token);
+            autoTitle = titleRes.title || plainText.slice(0, 60);
+          } catch { autoTitle = plainText.slice(0, 60); }
+        }
         setTitle(autoTitle);
         const updated = await apiFetch(`/api/notes/${note.id}`, { method: "PUT", body: { title: autoTitle, content } }, token);
         onSaved(updated);
