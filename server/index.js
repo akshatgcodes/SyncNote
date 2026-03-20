@@ -26,7 +26,10 @@ await db.write();
 const nextId = (arr) => arr.length === 0 ? 1 : Math.max(...arr.map(x => x.id)) + 1;
 const now = () => Math.floor(Date.now() / 1000);
 
-app.use(cors({ origin: true, credentials: true }));
+app.use(cors({ 
+  origin: ['https://syncnote2.vercel.app', 'http://localhost:5173', 'http://localhost:3001'],
+  credentials: true 
+}));
 app.use(express.json({ limit: "2mb" }));
 
 const distPath = join(__dirname, "../client/dist");
