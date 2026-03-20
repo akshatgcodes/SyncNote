@@ -655,7 +655,7 @@ function AiChat({ notes, token }) {
 }
 
 /* ─── Note Editor ─────────────────────────────────────────────────────────── */
-function NoteEditor({ note, token, onSaved, onDeleted, toast }) {
+function NoteEditor({ note, token, onSaved, onDeleted, toast, onMenuClick }) {
   const [title, setTitle] = useState(note.title);
   const [saved, setSaved] = useState(true);
   const edRef = useRef(null);
@@ -721,7 +721,7 @@ function NoteEditor({ note, token, onSaved, onDeleted, toast }) {
   return (
     <div className="editor-wrap">
       <div className="editor-topbar">
-        <button className="btn-menu" onClick={() => setSidebarOpen(true)}>☰</button>
+        <button className="btn-menu" onClick={onMenuClick}>☰</button>
         <input
           className="editor-title-input"
           value={title}
@@ -867,6 +867,7 @@ function MainApp({ user, token, onLogout }) {
             onSaved={handleSaved}
             onDeleted={handleDeleted}
             toast={toast}
+            onMenuClick={() => setSidebarOpen(true)}
           />
         ) : (
           <div className="empty-state">
