@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  // Served under /app/ by the Express server; the landing page owns "/".
+  base: '/app/',
   server: {
     port: 5173,
     proxy: {

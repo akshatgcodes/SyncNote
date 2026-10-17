@@ -47,8 +47,12 @@ app.use(cors({
 }));
 app.use(express.json({ limit: "2mb" }));
 
+// "/" is the landing page (Next.js static export); the React app is served
+// under /app/. Both are built at deploy time.
 const distPath = join(__dirname, "../client/dist");
-if (fs.existsSync(distPath)) app.use(express.static(distPath));
+const landingPath = join(__dirname, "../landing/out");
+if (fs.existsSync(distPath)) app.use("/app", express.static(distPath));
+if (fs.existsSync(landingPath)) app.use(express.static(landingPath));
 
 function auth(req, res, next) {
   const header = req.headers.authorization;
@@ -176,7 +180,7 @@ app.post("/api/title", auth, async (req, res) => {
   } catch { res.json({ title: content.trim().slice(0, 60) }); }
 });
 
-app.get("*", (req, res) => {
+app.get("/app/*", (req, res) => {
   const index = join(distPath, "index.html");
   if (fs.existsSync(index)) res.sendFile(index);
   else res.send("SyncNote API running. Open http://localhost:5173");

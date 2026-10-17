@@ -50,8 +50,8 @@ export default function Home() {
             <a href="#stack" className="hover:text-[var(--foreground)]">
               Stack
             </a>
-            <a href="#run-it" className="hover:text-[var(--foreground)]">
-              Run it
+            <a href="/app/" className="hover:text-[var(--foreground)]">
+              Open app
             </a>
           </nav>
         </div>
@@ -72,8 +72,14 @@ export default function Home() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
-                href="#run-it"
+                href="/app/"
                 className="rounded-lg bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[var(--accent-strong)]"
+              >
+                Try it live — sign up free
+              </a>
+              <a
+                href="#run-it"
+                className="rounded-lg border border-[var(--border-strong)] px-5 py-2.5 text-sm font-medium transition hover:bg-[var(--surface)]"
               >
                 Run it locally
               </a>
