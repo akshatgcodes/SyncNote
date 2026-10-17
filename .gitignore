@@ -3,3 +3,9 @@ node_modules
 *.db
 dist
 .DS_Store
+
+# Env files (keep the example)
+.env.local
+.env.*.local
+.env*
+!.env.example
