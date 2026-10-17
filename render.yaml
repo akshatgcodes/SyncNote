@@ -5,7 +5,7 @@ services:
     plan: free
     region: oregon
     rootDir: server
-    buildCommand: npm ci     buildCommand: npm ci    buildCommand: npm ci cd ../client     buildCommand: npm ci    buildCommand: npm ci npm ci     buildCommand: npm ci    buildCommand: npm ci npm run build     buildCommand: npm ci    buildCommand: npm ci cd ../landing     buildCommand: npm ci    buildCommand: npm ci npm ci     buildCommand: npm ci    buildCommand: npm ci npm run build
+    buildCommand: npm ci && cd ../client && npm ci && npm run build && cd ../landing && npm ci && npm run build
     startCommand: npm start
     envVars:
       - key: JWT_SECRET
