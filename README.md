@@ -49,4 +49,4 @@ Open http://localhost:5173 in your browser.
 - **Backend:** Express.js
 - **Database:** MongoDB (via Mongoose)
 - **Auth:** JWT tokens + bcrypt passwords
-- **AI:** Llama 3.3 70B via the Groq API (free tier)
+- **AI:** GPT-OSS 120B via the Groq API (free tier; override with `GROQ_MODEL`)

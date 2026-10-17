@@ -13,6 +13,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const JWT_SECRET = process.env.JWT_SECRET || "syncnote-dev-secret";
 const GROQ_KEY = process.env.GROQ_API_KEY || "";
+const GROQ_MODEL = process.env.GROQ_MODEL || "openai/gpt-oss-120b";
 const MONGO_URI = process.env.MONGO_URI || "";
 
 const userSchema = new mongoose.Schema({
@@ -143,7 +144,7 @@ app.post("/api/chat", auth, async (req, res) => {
     const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_KEY },
-      body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages: groqMessages, max_tokens: 1024, temperature: 0.7 })
+      body: JSON.stringify({ model: GROQ_MODEL, messages: groqMessages, max_tokens: 2048, temperature: 0.7, reasoning_effort: "low" })
     });
     const data = await groqRes.json();
     if (data.error) throw new Error(data.error.message);
@@ -160,12 +161,13 @@ app.post("/api/title", auth, async (req, res) => {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + GROQ_KEY },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
+        model: GROQ_MODEL,
         messages: [
           { role: "system", content: "Generate a short, concise title (max 6 words) for the following note. Reply with ONLY the title, no quotes, no punctuation at the end." },
           { role: "user", content: content.slice(0, 500) }
         ],
-        max_tokens: 20, temperature: 0.5
+        // Reasoning models spend tokens thinking before the title, so leave headroom.
+        max_tokens: 256, temperature: 0.5, reasoning_effort: "low"
       })
     });
     const data = await groqRes.json();
