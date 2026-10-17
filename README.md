@@ -50,8 +50,8 @@ SyncNote is a distraction-free notes app that saves as you type and names your n
 
 | Layer | Tech |
 |---|---|
-| Frontend | React 18 · Vite 5 · Next.js 16 static landing page |
-| Backend | Node.js · Express 4 |
+| Frontend | React 18 · Vite 8 · Next.js 16 static landing page |
+| Backend | Node.js · Express 5 |
 | Database | MongoDB Atlas · Mongoose |
 | Auth | JWT (`jsonwebtoken`) · bcryptjs |
 | AI | Groq API · `openai/gpt-oss-120b` (configurable with `GROQ_MODEL`) |

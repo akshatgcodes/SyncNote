@@ -6,9 +6,9 @@
 
 | Layer | Tech |
 |---|---|
-| Frontend | React 18 single-page app built with Vite 5 (`client/`), served under `/app/` |
+| Frontend | React 18 single-page app built with Vite 8 (`client/`), served under `/app/` |
 | Editor | `contentEditable` with `document.execCommand` (bold, italic, underline, H1, H2, lists) |
-| Backend | Node.js · Express 4 (`server/index.js`, ES modules) |
+| Backend | Node.js · Express 5 (`server/index.js`, ES modules) |
 | Database | MongoDB Atlas M0 · Mongoose |
 | Auth | `jsonwebtoken` (30-day tokens) · `bcryptjs` |
 | AI | Groq OpenAI-compatible chat API · `openai/gpt-oss-120b` by default |
@@ -32,7 +32,7 @@ render.yaml         Render service definition
 ```js
 app.use("/app", express.static("client/dist"));   // React build
 app.use(express.static("landing/out"));           // landing page at "/"
-app.get("/app/*", sendClientIndex);               // SPA fallback
+app.get("/app/{*splat}", sendClientIndex);       // SPA fallback (Express 5 syntax)
 ```
 
 ### Auth middleware
