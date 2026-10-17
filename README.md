@@ -1,6 +1,6 @@
 # SyncNote
 
-A clean, friendly note-taking app with AI chat — powered by Express + SQLite backend.
+A clean, friendly note-taking app with AI chat — powered by an Express + MongoDB backend.
 
 ## Quick Start
 
@@ -10,12 +10,15 @@ cd server && npm install
 cd ../client && npm install
 ```
 
-### 2. Set up your API key (for AI Chat)
+### 2. Configure the server
 ```bash
 cd server
 cp .env.example .env
 ```
-Open `server/.env` and add your free Gemini key from https://aistudio.google.com
+Open `server/.env` and set:
+- `MONGO_URI` — a MongoDB connection string (local or a free MongoDB Atlas cluster). Required.
+- `GROQ_API_KEY` — a free key from https://console.groq.com. Optional; without it AI chat is disabled and titles fall back to the note's first line.
+- `JWT_SECRET` — any long random string.
 
 ### 3. Run the app (two terminals)
 
@@ -36,14 +39,14 @@ npm run dev
 Open http://localhost:5173 in your browser.
 
 ## Features
-- ✅ Register & login (stored in SQLite database)
+- ✅ Register & login (stored in MongoDB)
 - ✅ Create, edit, delete notes (autosaved)
-- ✅ AI chat assistant (Google Gemini)
-- ✅ Notes persist forever in `server/syncnote.db`
+- ✅ AI chat assistant that can see your notes (Groq)
+- ✅ AI-generated note titles
 
 ## Stack
 - **Frontend:** React + Vite
 - **Backend:** Express.js
-- **Database:** SQLite (file: `server/syncnote.db`)
+- **Database:** MongoDB (via Mongoose)
 - **Auth:** JWT tokens + bcrypt passwords
-- **AI:** Google Gemini 2.0 Flash (free)
+- **AI:** Llama 3.3 70B via the Groq API (free tier)
