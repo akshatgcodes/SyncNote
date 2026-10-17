@@ -180,7 +180,7 @@ app.post("/api/title", auth, async (req, res) => {
   } catch { res.json({ title: content.trim().slice(0, 60) }); }
 });
 
-app.get("/app/*", (req, res) => {
+app.get("/app/{*splat}", (req, res) => {
   const index = join(distPath, "index.html");
   if (fs.existsSync(index)) res.sendFile(index);
   else res.send("SyncNote API running. Open http://localhost:5173");
